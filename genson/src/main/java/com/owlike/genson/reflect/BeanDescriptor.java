@@ -1,5 +1,8 @@
 package com.owlike.genson.reflect;
 
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Target;
+import java.text.FieldPosition;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -10,6 +13,7 @@ import java.util.Map;
 
 import com.owlike.genson.*;
 import com.owlike.genson.reflect.BeanCreator.BeanCreatorProperty;
+import com.owlike.genson.reflect.PropertyAccessor.FieldAccessor;
 import com.owlike.genson.stream.ObjectReader;
 import com.owlike.genson.stream.ObjectWriter;
 
@@ -30,6 +34,12 @@ import com.owlike.genson.stream.ObjectWriter;
  * MyClass existingInstance = descriptor.deserialize(existingInstance, new JsonReader(&quot;{}&quot;),
  * 		new Context(genson));
  * </pre>
+ * 
+ * 
+ * Added field sort used during class/bean serialisation.
+ * This modification is done by third party developer.
+ * @author Max Petrov 02.2019 minii0878@gmail.com
+ * 
  *
  * @param <T> type that this BeanDescriptor can serialize and deserialize.
  * @author eugen
@@ -51,6 +61,10 @@ public class BeanDescriptor<T> implements Converter<T> {
 
   private final static Comparator<BeanProperty> _readablePropsComparator = new Comparator<BeanProperty>() {
     public int compare(BeanProperty o1, BeanProperty o2) {
+    	if(o1 instanceof FieldAccessor && o2 instanceof FieldAccessor) {
+    		int r=((FieldAccessor)o1).getSort().compareTo(((FieldAccessor)o2).getSort());
+    		if(r!=0) return r;
+    	}
       return o1.name.compareToIgnoreCase(o2.name);
     }
   };

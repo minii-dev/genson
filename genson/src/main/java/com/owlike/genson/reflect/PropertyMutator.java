@@ -9,6 +9,12 @@ import java.lang.reflect.Type;
 import com.owlike.genson.*;
 import com.owlike.genson.stream.ObjectReader;
 
+/**
+ * Modified error message to be more clear when using complex class deserialisation.
+ * This modification is done by third party developer.
+ * @author Max Petrov 02.2019 minii0878@gmail.com
+ */
+
 public abstract class PropertyMutator extends BeanProperty implements Comparable<PropertyMutator> {
   Deserializer<Object> propertyDeserializer;
 
@@ -47,7 +53,7 @@ public abstract class PropertyMutator extends BeanProperty implements Comparable
   }
 
   protected JsonBindingException couldNotDeserialize(Throwable e) {
-    return new JsonBindingException("Could not deserialize to property '" + name + "' of class " + declaringClass, e);
+    return new JsonBindingException("Cannot read \"" + name + "\" (in " + declaringClass+')', e);
   }
 
   public static class MethodMutator extends PropertyMutator {

@@ -7,8 +7,15 @@ import java.lang.reflect.Method;
 import java.lang.reflect.Type;
 
 import com.owlike.genson.*;
+import com.owlike.genson.annotation.Sort;
 import com.owlike.genson.stream.JsonWriter;
 import com.owlike.genson.stream.ObjectWriter;
+
+/**
+ * Added field sort used during class/bean serialisation.
+ * This modification is done by third party developer.
+ * @author Max Petrov 02.2019 minii0878@gmail.com
+ */
 
 public abstract class PropertyAccessor extends BeanProperty implements Comparable<PropertyAccessor> {
   Serializer<Object> propertySerializer;
@@ -84,6 +91,7 @@ public abstract class PropertyAccessor extends BeanProperty implements Comparabl
 
   public static class FieldAccessor extends PropertyAccessor {
     protected final Field _field;
+    protected String sort;
 
     public FieldAccessor(String name, Field field, Type type, Class<?> concreteClass) {
       super(name, type, field.getDeclaringClass(), concreteClass, field.getAnnotations(), field.getModifiers());
@@ -102,6 +110,17 @@ public abstract class PropertyAccessor extends BeanProperty implements Comparabl
       } catch (IllegalAccessException e) {
         throw couldNotAccess(e);
       }
+    }
+    
+    public String getSort() {
+    	if(sort==null) {
+	    	Sort sorta = _field.getAnnotation(Sort.class);
+	    	if(sorta!=null) {
+	    		sort=sorta.value();
+	    	}
+	    	if(sort==null) sort=name.toLowerCase();
+    	}
+    	return sort;
     }
 
     @Override

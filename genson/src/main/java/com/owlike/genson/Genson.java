@@ -48,6 +48,11 @@ import com.owlike.genson.stream.*;
  * {@link com.owlike.genson.GensonBuilder#useConstructorWithArguments(boolean)}.
  *
  * @author eugen
+ * 
+ * 
+ * Modified/corrected an error message.
+ * This modification is done by third party developer.
+ * @author Max Petrov 02.2019 minii0878@gmail.com
  */
 public final class Genson {
   /**
@@ -381,7 +386,7 @@ public final class Genson {
     try {
       return deser.deserialize(reader, ctx);
     } catch (Exception e) {
-      throw new JsonBindingException("Could not deserialize to type " + type.getRawClass(), e);
+      throw new JsonBindingException("Cannot read \""+type.getRawClass().getSimpleName()+"\" (" + type.getRawClass()+')', e);
     }
   }
 

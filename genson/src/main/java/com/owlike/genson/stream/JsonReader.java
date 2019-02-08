@@ -11,6 +11,12 @@ import java.util.Map;
 
 import static com.owlike.genson.stream.ValueType.*;
 
+/**
+ * Modified/corrected an error message.
+ * This modification is done by third party developer.
+ * @author Max Petrov 02.2019 minii0878@gmail.com
+ */
+
 public class JsonReader implements ObjectReader {
 
   protected final static int[] SKIPPED_TOKENS;
@@ -195,7 +201,7 @@ public class JsonReader implements ObjectReader {
     if (BOOLEAN == valueType) {
       return _booleanValue.toString();
     }
-    throw new JsonStreamException("Readen value can not be converted to String");
+    throw new JsonStreamException("Сannot convert "+valueType+" to String");
   }
 
   public int valueAsInt() {
